@@ -1,0 +1,135 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.cartao {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    padding: 32px;
+    max-width: 640px;
+    width: 100%;
+}
+
+h1 {
+    color: #4a2e83;
+    margin-bottom: 8px;
+    font-size: 26px;
+}
+
+.subtitulo {
+    color: #555;
+    margin-bottom: 24px;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.benigno { color: #2e7d32; font-weight: bold; }
+.maligno { color: #c62828; font-weight: bold; }
+
+/* Formulario em grade (2 colunas) */
+.grade {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 13px;
+    color: #333;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border 0.2s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #764ba2;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    background: #764ba2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background: #5a3580;
+}
+
+/* Caixa de resultado */
+.resultado {
+    margin-top: 24px;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.resultado.benigno {
+    background: #e8f5e9;
+    border: 2px solid #2e7d32;
+}
+
+.resultado.maligno {
+    background: #ffebee;
+    border: 2px solid #c62828;
+}
+
+.resultado h2 {
+    margin-bottom: 8px;
+}
+
+.aviso.erro {
+    margin-top: 20px;
+    padding: 14px;
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 8px;
+    color: #856404;
+    text-align: center;
+}
+
+.rodape {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+}
+
+/* Em telas pequenas, formulario em 1 coluna */
+@media (max-width: 520px) {
+    .grade { grid-template-columns: 1fr; }
+}

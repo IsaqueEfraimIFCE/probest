@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostico de Cancer de Mama - Naive Bayes</title>
+    <!-- Arquivo de estilo (CSS) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="cartao">
+        <h1> Diagnostico de Tumor de Mama</h1>
+        <p class="subtitulo">
+            Preencha as medidas abaixo e clique em <strong>Prever</strong>.
+            O modelo (Naive Bayes) dira se o tumor tende a ser
+            <span class="benigno">Benigno</span> ou
+            <span class="maligno">Maligno</span>.
+        </p>
+
+        <!-- FORMULARIO: envia os dados para o back-end (Flask) -->
+        <form method="POST">
+            <div class="grade">
+                {% for chave, rotulo in campos.items() %}
+                <div class="campo">
+                    <label for="{{ chave }}">{{ rotulo }}</label>
+                    <input
+                        type="number" step="any" required
+                        id="{{ chave }}" name="{{ chave }}"
+                        value="{{ valores.get(chave, '') }}">
+                </div>
+                {% endfor %}
+            </div>
+
+            <button type="submit">Prever</button>
+        </form>
+
+        <!-- MENSAGEM DE ERRO (se houver) -->
+        {% if erro %}
+            <div class="aviso erro">{{ erro }}</div>
+        {% endif %}
+
+        <!-- RESULTADO DA PREVISAO -->
+        {% if resultado %}
+            <div class="resultado {{ 'maligno' if resultado == 'Maligno' else 'benigno' }}">
+                <h2>
+                    {% if resultado == 'Maligno' %} Tumor Maligno{% else %} Tumor Benigno{% endif %}
+                </h2>
+            </div>
+        {% endif %}
+
+        <p class="rodape">
+            Trabalho Final - Probabilidade e Estatistica | Professor Valberto Feitosa
+        </p>
+    </div>
+</body>
+</html>

@@ -95,7 +95,8 @@ print("=" * 70)
 # Formula (conforme PDF):
 #     var_dentro = (n_B * var_B + n_M * var_M) / N
 #     R2 = 1 - var_dentro / var_total
-# Usamos ddof=1 (variancia amostral) em todos os calculos, de forma consistente.
+# Usamos ddof=0 (variancia populacional) em todos os calculos, de forma
+# consistente. Assim o R2 fica no intervalo [0, 1] (nunca negativo).
 variaveis = [c for c in colunas if c not in ("id", "diagnostico")]
 benignos   = df[df["diagnostico"] == "B"]
 malignos   = df[df["diagnostico"] == "M"]
@@ -103,17 +104,17 @@ N = len(df)
 
 
 def eta2(feature):
-    var_total  = df[feature].var(ddof=1)
-    var_dentro = (len(benignos) * benignos[feature].var(ddof=1) +
-                  len(malignos) * malignos[feature].var(ddof=1)) / N
+    var_total  = df[feature].var(ddof=0)
+    var_dentro = (len(benignos) * benignos[feature].var(ddof=0) +
+                  len(malignos) * malignos[feature].var(ddof=0)) / N
     return 1 - var_dentro / var_total
 
 
 correlacoes = pd.Series(
     {v: eta2(v) for v in variaveis}
 ).sort_values(ascending=False)
-print("Top 12 variaveis com maior R2 (eta-quadrado) em relacao ao diagnostico:")
-print(correlacoes.head(12).round(3))
+print("R2 (eta-quadrado) de TODAS as variaveis em relacao ao diagnostico:")
+print(correlacoes.round(3).to_string())
 
 # ---------------------------------------------------------------------------
 # 5) GRAFICOS SIMPLES
@@ -131,10 +132,10 @@ plt.tight_layout()
 plt.savefig("imagens/distribuicao_classes.png")
 plt.close()
 
-# Grafico 2: top variaveis por R2 (eta-quadrado)
-plt.figure(figsize=(7, 5))
-correlacoes.head(10).iloc[::-1].plot(kind="barh", color="#1E88E5")
-plt.title("Top 10 variaveis x R2 ")
+# Grafico 2: R2 (eta-quadrado) de todas as variaveis
+plt.figure(figsize=(8, 10))
+correlacoes.iloc[::-1].plot(kind="barh", color="#1E88E5")
+plt.title("Todas as variaveis x R2 (eta-quadrado) com o diagnostico")
 plt.xlabel("R2")
 plt.tight_layout()
 plt.savefig("imagens/correlacoes.png")

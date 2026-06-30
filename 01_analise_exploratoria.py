@@ -82,18 +82,37 @@ print(f"Maligno: {contagem.get('M', 0)} "
 print("A base e razoavelmente equilibrada (nao ha classe muito rara).")
 
 # ---------------------------------------------------------------------------
-# 4) CORRELACAO COM O DIAGNOSTICO -> JUSTIFICATIVA DA ESCOLHA DAS FEATURES
+# 4) ASSOCIACAO COM O DIAGNOSTICO (R2 / ETA-QUADRADO)
+#    -> JUSTIFICATIVA DA ESCOLHA DAS FEATURES
 # ---------------------------------------------------------------------------
 print("\n" + "=" * 70)
-print("4) VARIAVEIS MAIS RELACIONADAS COM O DIAGNOSTICO")
+print("4) VARIAVEIS MAIS RELACIONADAS COM O DIAGNOSTICO (R2 / ETA-QUADRADO)")
 print("=" * 70)
-# Transformamos o alvo em numero: Maligno = 1, Benigno = 0
-df["alvo_num"] = (df["diagnostico"] == "M").astype(int)
-# Correlacao (em modulo) de cada variavel com o alvo.
-# Quanto mais perto de 1, mais a variavel ajuda a separar as classes.
+# O diagnostico e uma variavel QUALITATIVA (B/M). Para medir a associacao
+# entre uma variavel quantitativa e uma qualitativa usamos o eta-quadrado (R2),
+# que e a medida correta nesse caso (independente do numero de categorias).
+#
+# Formula (conforme PDF):
+#     var_dentro = (n_B * var_B + n_M * var_M) / N
+#     R2 = 1 - var_dentro / var_total
+# Usamos ddof=1 (variancia amostral) em todos os calculos, de forma consistente.
 variaveis = [c for c in colunas if c not in ("id", "diagnostico")]
-correlacoes = df[variaveis].corrwith(df["alvo_num"]).abs().sort_values(ascending=False)
-print("Top 12 variaveis mais correlacionadas com o diagnostico:")
+benignos   = df[df["diagnostico"] == "B"]
+malignos   = df[df["diagnostico"] == "M"]
+N = len(df)
+
+
+def eta2(feature):
+    var_total  = df[feature].var(ddof=1)
+    var_dentro = (len(benignos) * benignos[feature].var(ddof=1) +
+                  len(malignos) * malignos[feature].var(ddof=1)) / N
+    return 1 - var_dentro / var_total
+
+
+correlacoes = pd.Series(
+    {v: eta2(v) for v in variaveis}
+).sort_values(ascending=False)
+print("Top 12 variaveis com maior R2 (eta-quadrado) em relacao ao diagnostico:")
 print(correlacoes.head(12).round(3))
 
 # ---------------------------------------------------------------------------
@@ -112,11 +131,11 @@ plt.tight_layout()
 plt.savefig("imagens/distribuicao_classes.png")
 plt.close()
 
-# Grafico 2: top variaveis correlacionadas
+# Grafico 2: top variaveis por R2 (eta-quadrado)
 plt.figure(figsize=(7, 5))
 correlacoes.head(10).iloc[::-1].plot(kind="barh", color="#1E88E5")
-plt.title("Top 10 variaveis x correlacao com o diagnostico")
-plt.xlabel("Correlacao (em modulo)")
+plt.title("Top 10 variaveis x R2 ")
+plt.xlabel("R2")
 plt.tight_layout()
 plt.savefig("imagens/correlacoes.png")
 plt.close()

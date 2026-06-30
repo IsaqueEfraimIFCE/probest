@@ -12,7 +12,7 @@ O que faz:
   5. Mostra o resultado (e a probabilidade) na tela.
 
 Para rodar:  python app.py
-Depois abra no navegador: http://127.0.0.1:5000
+Depois abra no navegador: http://127.0.0.1:5050
 """
 
 import joblib
@@ -74,4 +74,9 @@ def index():
 
 if __name__ == "__main__":
     # debug=True facilita o desenvolvimento (mostra erros e recarrega sozinho).
-    app.run(debug=True)
+    # threaded=True permite atender varias conexoes ao mesmo tempo. Sem isso,
+    # o navegador (que mantem a conexao aberta) pode travar a pagina no Windows.
+    # use_reloader=False evita o "processo filho" do reloader, que no Windows
+    # (especialmente rodando pelo Thonny) costuma ficar orfao segurando a porta
+    # 5000 e faz a pagina ficar "carregando" para sempre.
+    app.run(host="127.0.0.1", port=5050, debug=True, threaded=True, use_reloader=False)

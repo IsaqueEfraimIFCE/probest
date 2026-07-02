@@ -48,7 +48,7 @@ Treina o Naive Bayes, mostra o desempenho e cria o arquivo
 ```bash
 python app.py
 ```
-Depois abra no navegador: **http://127.0.0.1:5000**
+Depois abra no navegador: **http://127.0.0.1:5050**
 Preencha o formulário e clique em **Prever**.
 
 ---
@@ -70,18 +70,20 @@ Preencha o formulário e clique em **Prever**.
 
 ## 4. Seleção das variáveis (features)
 
-Das 30 variáveis, escolhemos as **6 com maior correlação com o diagnóstico**
-(calculada na análise exploratória). Quanto mais perto de 1, melhor a
-variável separa Benigno de Maligno:
+Das 30 variáveis, escolhemos as **8 com maior R² (eta-quadrado) com o
+diagnóstico** (calculado em `r2_features.py`). Quanto mais perto de 1,
+melhor a variável separa Benigno de Maligno:
 
-| Variável | Correlação |
+| Variável | R² |
 |---|---|
-| `pontos_concavos_pior` | 0,794 |
-| `perimetro_pior` | 0,783 |
-| `pontos_concavos_media` | 0,777 |
-| `raio_pior` | 0,776 |
-| `perimetro_media` | 0,743 |
-| `area_pior` | 0,734 |
+| `pontos_concavos_pior` | 0,630 |
+| `perimetro_pior` | 0,613 |
+| `pontos_concavos_media` | 0,603 |
+| `raio_pior` | 0,603 |
+| `perimetro_media` | 0,552 |
+| `area_pior` | 0,538 |
+| `raio_media` | 0,533 |
+| `area_media` | 0,503 |
 
 Usar poucas variáveis bem escolhidas mantém o modelo simples, deixa o
 formulário da web pequeno e ainda assim alcança ótimo desempenho.
@@ -111,10 +113,10 @@ Resultados no conjunto de teste (114 pacientes):
 
 | Métrica | Valor |
 |---|---|
-| Acurácia | ~93,9% |
-| Precisão | ~0,95 |
-| Recall | ~0,88 |
-| F1-Score | ~0,91 |
+| Acurácia | ~88,6% |
+| Precisão | ~0,94 |
+| Recall | ~0,74 |
+| F1-Score | ~0,83 |
 
 A **matriz de confusão** é salva em `imagens/matriz_confusao.png`.
 
@@ -123,12 +125,10 @@ A **matriz de confusão** é salva em `imagens/matriz_confusao.png`.
 ## 7. Fluxo da aplicação
 
 1. O usuário acessa a página.
-2. Preenche as 6 medidas no formulário.
+2. Preenche as 8 medidas no formulário.
 3. Clica em **Prever**.
 4. O back-end (Flask) recebe os dados e carrega o modelo salvo.
 5. O modelo Naive Bayes faz a previsão.
 6. A página mostra **Tumor Benigno** ou **Tumor Maligno**, com a
    probabilidade (confiança) associada.
 
-> Observação: este projeto é educacional e **não** substitui um
-> diagnóstico médico real.

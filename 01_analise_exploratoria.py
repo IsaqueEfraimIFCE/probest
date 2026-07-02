@@ -79,7 +79,6 @@ print(f"\nBenigno: {contagem.get('B', 0)} "
       f"({100*contagem.get('B', 0)/total:.1f}%)")
 print(f"Maligno: {contagem.get('M', 0)} "
       f"({100*contagem.get('M', 0)/total:.1f}%)")
-print("A base e razoavelmente equilibrada (nao ha classe muito rara).")
 
 # ---------------------------------------------------------------------------
 # 4) ASSOCIACAO COM O DIAGNOSTICO (R2 / ETA-QUADRADO)

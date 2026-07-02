@@ -47,25 +47,29 @@ df = pd.read_csv(CAMINHO_DADOS, header=None, names=colunas)
 # 2) SELECIONAR AS VARIAVEIS PREDITORAS (FEATURES)
 # ---------------------------------------------------------------------------
 # A base tem 30 variaveis. Para o modelo ficar simples e o formulario da
-# aplicacao web nao ficar gigante, escolhemos 6 variaveis.
+# aplicacao web nao ficar gigante, escolhemos 8 variaveis.
 #
-# JUSTIFICATIVA: na analise exploratoria (arquivo 01), calculamos a correlacao
-# de cada variavel com o diagnostico. Quanto mais perto de 1, melhor a variavel
-# separa Benigno de Maligno. Escolhemos as 6 variaveis com MAIOR correlacao:
+# JUSTIFICATIVA: calculamos o R2 (eta-quadrado) de cada variavel com o
+# diagnostico (ver r2_features.py). Quanto mais perto de 1, melhor a variavel
+# separa Benigno de Maligno. Escolhemos as 8 variaveis com MAIOR R2:
 #
-#   1. pontos_concavos_pior   -> 0.794
-#   2. perimetro_pior         -> 0.783
-#   3. pontos_concavos_media  -> 0.777
-#   4. raio_pior              -> 0.776
-#   5. perimetro_media        -> 0.743
-#   6. area_pior              -> 0.734
+#   1. pontos_concavos_pior   -> 0.629747
+#   2. perimetro_pior         -> 0.612955
+#   3. pontos_concavos_media  -> 0.603129
+#   4. raio_pior              -> 0.602880
+#   5. perimetro_media        -> 0.551508
+#   6. area_pior              -> 0.538499
+#   7. raio_media             -> 0.532942
+#   8. area_media             -> 0.502658
 FEATURES = [
-    "pontos_concavos_pior",   # correlacao 0.794
-    "perimetro_pior",         # correlacao 0.783
-    "pontos_concavos_media",  # correlacao 0.777
-    "raio_pior",              # correlacao 0.776
-    "perimetro_media",        # correlacao 0.743
-    "area_pior",              # correlacao 0.734
+    "pontos_concavos_pior",   # R2 0.629747
+    "perimetro_pior",         # R2 0.612955
+    "pontos_concavos_media",  # R2 0.603129
+    "raio_pior",              # R2 0.602880
+    "perimetro_media",        # R2 0.551508
+    "area_pior",              # R2 0.538499
+    "raio_media",             # R2 0.532942
+    "area_media",             # R2 0.502658
 ]
 
 X = df[FEATURES]                              # variaveis de entrada

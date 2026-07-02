@@ -34,6 +34,8 @@ CAMPOS = {
     "raio_pior":             "Raio (pior)",
     "perimetro_media":       "Perimetro (media)",
     "area_pior":             "Area (pior)",
+    "raio_media":            "Raio (media)",
+    "area_media":            "Area (media)",
 }
 
 
